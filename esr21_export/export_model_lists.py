@@ -15,25 +15,47 @@ exclude_m2m_fields = exclude_fields + ['display_index', 'field_name',
                                        'name', 'version']
 
 subject_crfs_list = [
-  'arvsprepregnancy',
-  ]
+    'adverseevent',
+    'concomitantmedication',
+    'covid19preventativebehaviours',
+    'covid19symptomaticinfections',
+    'hospitalisation',
+    'demographicsdata',
+    'medicalhistory',
+    'physicalexam',
+    'pregnancystatus',
+    'pregnancytest',
+    'rapidhivtesting',
+    'samplecollection',
+    'specialinterestadverseevent',
+    'targetedphysicalexamination',
+    'vaccinationdetails',
+    'demographicsdata',
+    'vitalsigns'
+]
 
 subject_inlines_dict = {
   'cliniciannotes': [['cliniciannotesimage'], 'clinician_notes_id'],
 }
 
 subject_model_list = [
-  'subjectconsent'
+    'eligibilityconfirmation', 'informedconsent', 'personalcontactinfo',
+    'seriousadverseevent', 'specialinterestadverseevent', 'subjectrequisition',
+    'subjectvisit'
+
 ]
 
 subject_many_to_many_crf = [
-  ['arvsprepregnancy', 'prior_arv', 'priorarv'],
-  ['maternaldiagnoses', 'who', 'wcsdxadult'],
+    ['hospitalisation', 'covid_symptoms', 'covidsymptoms'],
+    ['medicalhistory', 'covid_symptoms', 'symptoms'],
+    ['medicalhistory', 'comorbidities', 'diseases'],
+    ['pregnancystatus', 'contraceptive', 'contraception'],
 ]
 
 subject_many_to_many_non_crf = [[
-    'maternaldelivery','delivery_complications',],]
+    'seriousadverseevent', 'seriousness_criteria', 'saecriteria'], ]
 
-offstudy_prn_model_list = ['subjectoffstudy',]
+offstudy_prn_model_list = ['subjectoffstudy', ]
 
-death_report_prn_model_list = ['deathReport',]
+
+death_report_prn_model_list = ['deathreport', ]
