@@ -35,7 +35,7 @@ subject_crfs_list = [
 ]
 
 subject_inlines_dict = {
-  'cliniciannotes': [['cliniciannotesimage'], 'clinician_notes_id'],
+  # 'cliniciannotes': [['cliniciannotesimage'], 'clinician_notes_id'], 
 }
 
 subject_model_list = [
