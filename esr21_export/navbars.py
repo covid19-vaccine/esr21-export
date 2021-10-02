@@ -8,15 +8,15 @@ esr21_export = Navbar(name='esr21_export')
 
 esr21_export.append_item(
     NavbarItem(name='study_data_export',
-               label='Data Export',
-               fa_icon='fa-cogs',
+               label='Schedule/Non Schedule Visit Data Export',
+               fa_icon='fa-download',
                url_name='esr21_export:home_url'))
 
 esr21_export.append_item(
     NavbarItem(
         name='export_data',
         title='Export Data',
-        label='ESR21 Export Data',
+        label='All Data Export',
         fa_icon='fa fa-database',
         url_name=settings.DASHBOARD_URL_NAMES[
             'export_listboard_url'],
