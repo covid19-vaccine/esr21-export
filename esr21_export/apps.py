@@ -15,6 +15,7 @@ class AppConfig(DjangoAppConfig):
     export_date =  '/documents/esr21_export_' + today_date
     subject_path = settings.MEDIA_ROOT + export_date + '/subject/'
     non_crf_path = settings.MEDIA_ROOT + export_date + '/non_crf/'
+    metadata_path = settings.MEDIA_ROOT + export_date + '/metadata/'
 
 
 class EdcBaseAppConfig(BaseEdcBaseAppConfig):

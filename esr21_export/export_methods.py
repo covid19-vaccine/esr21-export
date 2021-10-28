@@ -19,7 +19,7 @@ class ExportMethods:
 
     def __init__(self):
         self.rs_cls = django_apps.get_model('edc_registration.registeredsubject')
-        self.subject_consent_csl = django_apps.get_model('esr21_subject.subjectconsent')
+        self.subject_consent_csl = django_apps.get_model('esr21_subject.informedconsent')
 
     def encrypt_values(self, obj_dict=None, obj_cls=None):
         """Ecrypt values for fields that are encypted.

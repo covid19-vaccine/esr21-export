@@ -32,10 +32,12 @@
     <p></p>
     <h1>Study data export</h1>
     <p>Generate and download study data sets from the tables below.</p>
+    
     <p> </p><p> </p>
     
         <div class="col-md-10 col-md-offset-1">
-
+			
+			{% include "esr21_export/metadata.html" %}
 			{% include "esr21_export/non_crf_export.html" %}            
             {% include "esr21_export/subject_crf_export.html" %}
 
