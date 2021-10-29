@@ -55,10 +55,9 @@ class ExportNonCrfData:
     def subject_m2m_non_crf(self, subject_many_to_many_non_crf=None):
         """.
         """
-
         for crf_infor in subject_many_to_many_non_crf:
-            crf_name, mm_field = crf_infor
-            crf_cls = django_apps.get_model('subject_subject', crf_name)
+            crf_name, mm_field, _ = crf_infor
+            crf_cls = django_apps.get_model('esr21_subject', crf_name)
             count = 0
             mergered_data = []
             crf_objs = crf_cls.objects.all()

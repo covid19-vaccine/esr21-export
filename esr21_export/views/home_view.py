@@ -45,13 +45,22 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
             self.generate_export(thread_name='esr21_subject_crf_export',
                                  thread_target=self.download_subject_data,
                                  description='ESR21 Subject CRF Export')
+        elif download == '4':
+            self.generate_export(thread_name='esr21_metadata_export',
+                                 thread_target=self.download_medata,
+                                 description='Metadata Export')
 
         non_crf_exports = ExportFile.objects.filter(
             description='ESR21 Non CRF Export').order_by('-uploaded_at')[:10]
+        
+        metadata_exports = ExportFile.objects.filter(
+            description='Metadata Export').order_by('-uploaded_at')[:10]
+        
         subject_crf_exports = ExportFile.objects.filter(
             description='ESR21 Subject CRF Export').order_by('-uploaded_at')[:10]
         context.update(
             non_crf_exports=non_crf_exports,
+            metadata_exports=metadata_exports,
             subject_crf_exports=subject_crf_exports,)
         return context
 

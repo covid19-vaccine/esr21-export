@@ -52,8 +52,7 @@ subject_many_to_many_crf = [
     ['pregnancystatus', 'contraceptive', 'contraception'],
 ]
 
-subject_many_to_many_non_crf = [[
-    'seriousadverseevent', 'seriousness_criteria', 'saecriteria'], ]
+subject_many_to_many_non_crf = []
 
 offstudy_prn_model_list = ['subjectoffstudy', ]
 
