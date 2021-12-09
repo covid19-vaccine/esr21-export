@@ -35,7 +35,9 @@ subject_crfs_list = [
 ]
 
 subject_inlines_dict = {
-'adverseevent': [['adverseeventrecord'], 'adverse_event_id'], 
+'adverseevent': [['adverseeventrecord'], 'adverse_event_id'],
+'seriousadverseevent': [['seriousadverseeventrecord'], 'serious_adverse_event_id'],
+'specialinterestadverseevent': [['specialinterestadverseEventrecord'], 'special_interest_adverse_event_id'], 
 }
 
 subject_model_list = [
