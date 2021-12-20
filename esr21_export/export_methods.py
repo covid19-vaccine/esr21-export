@@ -47,12 +47,15 @@ class ExportMethods:
                 time_variable = None
                 if 'datetime' in key:
                     time_variable = re.sub('datetime', 'time', key)
+                elif 'vaccination_date' == key:
+                    time_variable = re.sub('date', 'time', key)
                 else:
                     time_variable = key + '_time'
                 value = value.strftime('%m/%d/%Y')
                 new_key = re.sub('time', '', key)
                 result_dict_obj[new_key] = value
-                del result_dict_obj[key]
+                if not 'vaccination_date':
+                    del result_dict_obj[key]
                 result_dict_obj[time_variable] = time_value
             elif isinstance(value, datetime.date):
                 value = value.strftime('%m/%d/%Y')
