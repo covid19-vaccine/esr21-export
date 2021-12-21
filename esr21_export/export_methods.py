@@ -77,7 +77,7 @@ class ExportMethods:
                 last_alive_date=crf_obj.serious_adverse_event.subject_visit.last_alive_date,
                 reason=crf_obj.serious_adverse_event.subject_visit.reason,
                 survival_status=crf_obj.serious_adverse_event.subject_visit.survival_status,
-                visit_code=crf_obj.subject_visit.serious_adverse_event.visit_code,
+                visit_code=crf_obj.serious_adverse_event.subject_visit.visit_code,
                 visit_code_sequence=crf_obj.serious_adverse_event.subject_visit.visit_code_sequence,
                 study_status=crf_obj.serious_adverse_event.subject_visit.study_status,
                 appt_status=crf_obj.serious_adverse_event.subject_visit.appointment.appt_status,
