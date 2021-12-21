@@ -83,6 +83,19 @@ class ExportMethods:
                 appt_status=crf_obj.serious_adverse_event.subject_visit.appointment.appt_status,
                 appt_datetime=crf_obj.serious_adverse_event.subject_visit.appointment.appt_datetime,
             )
+            try:
+                rs = self.rs_cls.objects.get(subject_identifier=crf_obj.serious_adverse_event.subject_visit.subject_identifier)
+            except self.rs_cls.DoesNotExist:
+                raise ValidationError('RegisteredSubject can not be missing')
+            else:
+                data.update(
+                    screening_age_in_years=rs.screening_age_in_years,
+                    registration_status=rs.registration_status,
+                    dob=rs.dob,
+                    gender=rs.gender,
+                    subject_type=rs.subject_type,
+                    registration_datetime=rs.registration_datetime,
+                )
         else:
             data.update(
                 subject_identifier=crf_obj.subject_visit.subject_identifier,
@@ -96,19 +109,19 @@ class ExportMethods:
                 appt_status=crf_obj.subject_visit.appointment.appt_status,
                 appt_datetime=crf_obj.subject_visit.appointment.appt_datetime,
             )
-        try:
-            rs = self.rs_cls.objects.get(subject_identifier=crf_obj.subject_visit.subject_identifier)
-        except self.rs_cls.DoesNotExist:
-            raise ValidationError('RegisteredSubject can not be missing')
-        else:
-            data.update(
-                screening_age_in_years=rs.screening_age_in_years,
-                registration_status=rs.registration_status,
-                dob=rs.dob,
-                gender=rs.gender,
-                subject_type=rs.subject_type,
-                registration_datetime=rs.registration_datetime,
-            )
+            try:
+                rs = self.rs_cls.objects.get(subject_identifier=crf_obj.subject_visit.subject_identifier)
+            except self.rs_cls.DoesNotExist:
+                raise ValidationError('RegisteredSubject can not be missing')
+            else:
+                data.update(
+                    screening_age_in_years=rs.screening_age_in_years,
+                    registration_status=rs.registration_status,
+                    dob=rs.dob,
+                    gender=rs.gender,
+                    subject_type=rs.subject_type,
+                    registration_datetime=rs.registration_datetime,
+                )
         return data
 
     def non_crf_obj_dict(self, obj=None):
