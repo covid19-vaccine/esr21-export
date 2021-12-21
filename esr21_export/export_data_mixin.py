@@ -22,7 +22,7 @@ class ExportDataMixin:
         """
         for crf_name in crf_list:
             crf_cls = django_apps.get_model(study, crf_name)
-            objs = crf_cls.objects.all()
+            objs = crf_cls.objects.all()[:2]
             count = 0
             crf_data = []
             for crf_obj in objs:

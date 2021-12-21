@@ -9,7 +9,7 @@ exclude_fields = [
     'packed', 'packed_datetime', 'shipped', 'shipped_datetime',
     'received_datetime', 'identifier_prefix', 'primary_aliquot_identifier',
     'clinic_verified', 'clinic_verified_datetime', 'drawn_datetime',
-    'related_tracking_identifier', 'parent_tracking_identifier']
+    'related_tracking_identifier', 'parent_tracking_identifier', 'provider_name']
 
 exclude_m2m_fields = exclude_fields + ['display_index', 'field_name',
                                        'name', 'version']
@@ -37,14 +37,13 @@ subject_crfs_list = [
 subject_inlines_dict = {
 'adverseevent': [['adverseeventrecord'], 'adverse_event_id'],
 'seriousadverseevent': [['seriousadverseeventrecord'], 'serious_adverse_event_id'],
-'specialinterestadverseevent': [['specialinterestadverseEventrecord'], 'special_interest_adverse_event_id'], 
+'SpecialInterestAdverseEvent': [['SpecialInterestAdverseEventRecord'], 'special_interest_adverse_event_id'], 
 }
 
 subject_model_list = [
     'eligibilityconfirmation', 'informedconsent', 'personalcontactinfo',
     'seriousadverseevent', 'specialinterestadverseevent', 'subjectrequisition',
     'subjectvisit'
-
 ]
 
 subject_many_to_many_crf = [
@@ -52,6 +51,7 @@ subject_many_to_many_crf = [
     ['medicalhistory', 'covid_symptoms', 'symptoms'],
     ['medicalhistory', 'comorbidities', 'diseases'],
     ['pregnancystatus', 'contraceptive', 'contraception'],
+    ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria'],
 ]
 
 subject_many_to_many_non_crf = []
