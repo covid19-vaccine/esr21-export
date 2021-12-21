@@ -8,6 +8,8 @@ from django_crypto_fields.fields import (
 from pytz import timezone
 import re
 
+from esr21_subject.models import SeriousAdverseEventRecord
+
 encrypted_fields = [
     EncryptedCharField, EncryptedDecimalField, EncryptedIntegerField,
     EncryptedTextField, FirstnameField, IdentityField, LastnameField]
@@ -68,18 +70,32 @@ class ExportMethods:
 
         data = crf_obj.__dict__
         data = self.encrypt_values(obj_dict=data, obj_cls=crf_obj.__class__)
-        data.update(
-            subject_identifier=crf_obj.subject_visit.subject_identifier,
-            visit_datetime=crf_obj.subject_visit.report_datetime,
-            last_alive_date=crf_obj.subject_visit.last_alive_date,
-            reason=crf_obj.subject_visit.reason,
-            survival_status=crf_obj.subject_visit.survival_status,
-            visit_code=crf_obj.subject_visit.visit_code,
-            visit_code_sequence=crf_obj.subject_visit.visit_code_sequence,
-            study_status=crf_obj.subject_visit.study_status,
-            appt_status=crf_obj.subject_visit.appointment.appt_status,
-            appt_datetime=crf_obj.subject_visit.appointment.appt_datetime,
-        )
+        if crf_obj.__class__ == SeriousAdverseEventRecord:
+            data.update(
+                subject_identifier=crf_obj.serious_adverse_event.subject_visit.subject_identifier,
+                visit_datetime=crf_obj.serious_adverse_event.subject_visit.report_datetime,
+                last_alive_date=crf_obj.serious_adverse_event.subject_visit.last_alive_date,
+                reason=crf_obj.serious_adverse_event.subject_visit.reason,
+                survival_status=crf_obj.serious_adverse_event.subject_visit.survival_status,
+                visit_code=crf_obj.subject_visit.serious_adverse_event.visit_code,
+                visit_code_sequence=crf_obj.serious_adverse_event.subject_visit.visit_code_sequence,
+                study_status=crf_obj.serious_adverse_event.subject_visit.study_status,
+                appt_status=crf_obj.serious_adverse_event.subject_visit.appointment.appt_status,
+                appt_datetime=crf_obj.serious_adverse_event.subject_visit.appointment.appt_datetime,
+            )
+        else:
+            data.update(
+                subject_identifier=crf_obj.subject_visit.subject_identifier,
+                visit_datetime=crf_obj.subject_visit.report_datetime,
+                last_alive_date=crf_obj.subject_visit.last_alive_date,
+                reason=crf_obj.subject_visit.reason,
+                survival_status=crf_obj.subject_visit.survival_status,
+                visit_code=crf_obj.subject_visit.visit_code,
+                visit_code_sequence=crf_obj.subject_visit.visit_code_sequence,
+                study_status=crf_obj.subject_visit.study_status,
+                appt_status=crf_obj.subject_visit.appointment.appt_status,
+                appt_datetime=crf_obj.subject_visit.appointment.appt_datetime,
+            )
         try:
             rs = self.rs_cls.objects.get(subject_identifier=crf_obj.subject_visit.subject_identifier)
         except self.rs_cls.DoesNotExist:
