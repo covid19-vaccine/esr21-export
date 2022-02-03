@@ -30,7 +30,6 @@ subject_crfs_list = [
     'specialinterestadverseevent',
     'targetedphysicalexamination',
     'vaccinationdetails',
-    'demographicsdata',
     'vitalsigns'
 ]
 
@@ -41,9 +40,7 @@ subject_inlines_dict = {
 }
 
 subject_model_list = [
-    'eligibilityconfirmation', 'ScreeningEligibility', 'informedconsent', 'personalcontactinfo',
-    'seriousadverseevent', 'specialinterestadverseevent', 'subjectrequisition',
-    'subjectvisit'
+    'eligibilityconfirmation', 'screeningeligibility', 'informedconsent', 'personalcontactinfo'
 ]
 
 subject_many_to_many_crf = [
