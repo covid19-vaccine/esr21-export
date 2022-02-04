@@ -30,20 +30,21 @@ subject_crfs_list = [
     'specialinterestadverseevent',
     'targetedphysicalexamination',
     'vaccinationdetails',
-    'demographicsdata',
     'vitalsigns'
 ]
 
 subject_inlines_dict = {
-'adverseevent': [['adverseeventrecord'], 'adverse_event_id'],
-'seriousadverseevent': [['seriousadverseeventrecord'], 'serious_adverse_event_id'],
-'SpecialInterestAdverseEvent': [['SpecialInterestAdverseEventRecord'], 'special_interest_adverse_event_id'], 
+    'adverseevent': [['adverseeventrecord'], 'adverse_event_id'],
+    'seriousadverseevent': [
+        ['seriousadverseeventrecord'], 'serious_adverse_event_id'],
+    'specialinterestadverseevent': [
+        ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'], 
 }
 
 subject_model_list = [
-    'eligibilityconfirmation', 'ScreeningEligibility', 'informedconsent', 'personalcontactinfo',
-    'seriousadverseevent', 'specialinterestadverseevent', 'subjectrequisition',
-    'subjectvisit'
+    'eligibilityconfirmation', 'screeningeligibility', 'informedconsent',
+    'personalcontactinfo', 'seriousadverseevent', 'specialinterestadverseevent',
+    'subjectrequisition', 'subjectvisit'
 ]
 
 subject_many_to_many_crf = [
