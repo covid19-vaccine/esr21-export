@@ -19,7 +19,7 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
     navbar_name = 'esr21_export'
     navbar_selected_item = 'study_data_export'
     identifier_cls = ExportIdentifier
-    
+
     def stop_main_thread(self, thread_name):
         """Stop export file generation thread.
         """
@@ -29,7 +29,6 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
         for thread in threads:
             if thread.name == thread_name:
                 thread._stop()
-    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,10 +50,10 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
 
         non_crf_exports = ExportFile.objects.filter(
             description='ESR21 Non CRF Export').order_by('-uploaded_at')[:10]
-        
+
         metadata_exports = ExportFile.objects.filter(
             description='Metadata Export').order_by('-uploaded_at')[:10]
-        
+
         subject_crf_exports = ExportFile.objects.filter(
             description='ESR21 Subject CRF Export').order_by('-uploaded_at')[:10]
         context.update(
@@ -62,7 +61,6 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
             metadata_exports=metadata_exports,
             subject_crf_exports=subject_crf_exports,)
         return context
-
 
     def generate_export(self, thread_name=None, active_download=False,
                         thread_target=None, description=None):
