@@ -65,13 +65,13 @@ class ListBoardViewMixin:
     def download_all_data(self):
         """Export all data.
         """
-        
+
         export_identifier = self.identifier_cls().identifier
         thread_name = 'esr21_all_export'
         last_doc = ExportFile.objects.filter(
             description='ESR21 All Export', download_complete=True).order_by(
                 'created').last()
-        
+
         if last_doc:
             download_time = last_doc.download_time
         else:
@@ -92,7 +92,7 @@ class ListBoardViewMixin:
 
             export_path = dir_to_zip + '/subject/'
             self.export_subject_data(export_path=export_path)
-            
+
             export_path = dir_to_zip + '/non_crf/'
             self.export_non_crf_data(export_path=export_path)
 
@@ -112,13 +112,13 @@ class ListBoardViewMixin:
     def download_subject_data(self):
         """Export subject data.
         """
-        
+
         export_identifier = self.identifier_cls().identifier
         thread_name = 'esr21_subject_crf_export'
         last_doc = ExportFile.objects.filter(
             description='ESR21 Subject CRF Export', download_complete=True).order_by(
                 'created').last()
-        
+
         if last_doc:
             download_time = last_doc.download_time
         else:
@@ -152,18 +152,16 @@ class ListBoardViewMixin:
                 doc=doc)
         except Exception as e:
             raise e
-    
-    
+
     def download_non_crf_data(self):
         """Export all data.
         """
-        
         export_identifier = self.identifier_cls().identifier
         thread_name = 'esr21_non_crf_export',
         last_doc = ExportFile.objects.filter(
             description='ESR21 Non CRF Export',
             download_complete=True).order_by('created').last()
-        
+
         if last_doc:
             download_time = last_doc.download_time
         else:
@@ -182,7 +180,6 @@ class ListBoardViewMixin:
             zipped_file_path = 'documents/' + export_identifier + '_esr21_non_crf_export_' + today_date + '.zip'
             dir_to_zip = settings.MEDIA_ROOT + '/documents/' + export_identifier + '_esr21_non_crf_export_' + today_date
 
-            
             export_path = dir_to_zip + '/non_crf/'
             self.export_non_crf_data(export_path=export_path)
 
@@ -199,17 +196,16 @@ class ListBoardViewMixin:
         except Exception as e:
             raise e
 
-
     def download_medata(self):
         """Export all metadata.
         """
-        
+
         export_identifier = self.identifier_cls().identifier
         thread_name = 'esr21_metadata_export',
         last_doc = ExportFile.objects.filter(
             description='Metadata Export',
             download_complete=True).order_by('created').last()
-        
+
         if last_doc:
             download_time = last_doc.download_time
         else:
@@ -228,7 +224,6 @@ class ListBoardViewMixin:
             zipped_file_path = 'documents/' + export_identifier + '_esr21_metadata_export_' + today_date + '.zip'
             dir_to_zip = settings.MEDIA_ROOT + '/documents/' + export_identifier + '_esr21_metadata_export_' + today_date
 
-            
             export_path = dir_to_zip + '/metadata/'
             self.export_metadat_data(export_path=export_path)
 
@@ -244,7 +239,6 @@ class ListBoardViewMixin:
                 doc=doc)
         except Exception as e:
             raise e
-
 
     def zipfile(
             self, thread_name=None, dir_to_zip=None, start=None,
