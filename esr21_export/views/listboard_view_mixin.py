@@ -24,6 +24,9 @@ from ..models import ExportFile
 
 class ListBoardViewMixin:
 
+    def __init__(self, to_email=None):
+        self.email = to_email
+
     def export_subject_data(self, export_path=None):
             """Export all subject CRF data.
             """
@@ -246,7 +249,9 @@ class ListBoardViewMixin:
         """Zip file.
         """
         # Zip the file
-
+        if not self.email:
+            self.email = self.request.user.email
+    
         doc.download_complete = True
         doc.save()
 
@@ -275,7 +280,7 @@ class ListBoardViewMixin:
                 subject,
                 message,
                 settings.EMAIL_HOST_USER,  # FROM
-                [self.request.user.email],  # TO
+                [self.email],  # TO
                 fail_silently=False)
             threading.Thread(target=self.stop_main_thread, args=(thread_name,))
 
