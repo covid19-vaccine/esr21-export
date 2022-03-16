@@ -1,5 +1,6 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 import pandas as pd, datetime, os
 
 from .export_methods import ExportMethods
@@ -9,6 +10,22 @@ from .export_model_lists import exclude_fields, exclude_m2m_fields
 class ExportNonCrfData:
     """Export data.
     """
+    eligibility_confirmation_model = 'esr21_subject.eligibilityconfirmation'
+    informed_consent_model = 'esr21_subject.informedconsent'
+    screening_eligibility_model = 'esr21_subject.screeningeligibility'
+    
+    @property
+    def eligibility_confirmation_cls(self):
+        return django_apps.get_model(self.eligibility_confirmation_model)
+    
+    @property
+    def screening_eligibility_cls(self):
+        return django_apps.get_model(self.screening_eligibility_model)
+
+    
+    @property
+    def consent_model_cls(self):
+        return django_apps.get_model(self.informed_consent_model)
 
     def __init__(self, export_path=None):
         self.export_path = export_path or django_apps.get_app_config('esr21_export').non_crf_path
@@ -17,6 +34,22 @@ class ExportNonCrfData:
         self.export_methods_cls = ExportMethods()
         self.rs_cls = django_apps.get_model('edc_registration.registeredsubject')
         self.appointment_cls = django_apps.get_model('edc_appointment.appointment')
+     
+    @property
+    def eligible_no_icf_statistics(self):
+        """
+        Eligible from eligibility confirmation but no ICF form    
+        """
+        no_consent_screenigs = []
+
+        for site_id in self.site_ids:
+            eligible_identifier = self.eligibility_model_cls.objects.filter(
+                is_eligible=True, site_id=site_id).values_list('screening_identifier', flat=True)
+            eligible_identifier = list(set(eligible_identifier))
+            consent_screening_ids = self.consent_model_cls.objects.filter(site_id=site_id).values_list('screening_identifier', flat=True)
+            consent_screening_ids = list(set(consent_screening_ids))
+            no_consent_screenigs.append(list(set(eligible_identifier) - set(consent_screening_ids)))
+        return no_consent_screenigs
 
     def subject_non_crfs(self, subject_model_list=None, exclude=None):
         """E.
@@ -28,7 +61,10 @@ class ExportNonCrfData:
                 model_cls = self.appointment_cls
             else:
                 model_cls = django_apps.get_model('esr21_subject', model_name)
-            objs = model_cls.objects.all()
+            if model_name == 'eligibilityconfirmation':
+                objs = model_cls.objects.filter(~Q(screening_identifier__in=self.eligible_no_icf_statistics))
+            else:
+                objs = model_cls.objects.all()
             count = 0
             models_data = []
 
