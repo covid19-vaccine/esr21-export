@@ -13,16 +13,15 @@ class ExportNonCrfData:
     eligibility_confirmation_model = 'esr21_subject.eligibilityconfirmation'
     informed_consent_model = 'esr21_subject.informedconsent'
     screening_eligibility_model = 'esr21_subject.screeningeligibility'
-    
+
     @property
     def eligibility_confirmation_cls(self):
         return django_apps.get_model(self.eligibility_confirmation_model)
-    
+
     @property
     def screening_eligibility_cls(self):
         return django_apps.get_model(self.screening_eligibility_model)
 
-    
     @property
     def consent_model_cls(self):
         return django_apps.get_model(self.informed_consent_model)
@@ -34,16 +33,17 @@ class ExportNonCrfData:
         self.export_methods_cls = ExportMethods()
         self.rs_cls = django_apps.get_model('edc_registration.registeredsubject')
         self.appointment_cls = django_apps.get_model('edc_appointment.appointment')
-     
+        self.site_ids = [40, 41, 42, 43, 44]
+
     @property
     def eligible_no_icf_statistics(self):
         """
-        Eligible from eligibility confirmation but no ICF form    
+        Eligible from eligibility confirmation but no ICF form
         """
         no_consent_screenigs = []
 
         for site_id in self.site_ids:
-            eligible_identifier = self.eligibility_model_cls.objects.filter(
+            eligible_identifier = self.eligibility_confirmation_cls.objects.filter(
                 is_eligible=True, site_id=site_id).values_list('screening_identifier', flat=True)
             eligible_identifier = list(set(eligible_identifier))
             consent_screening_ids = self.consent_model_cls.objects.filter(site_id=site_id).values_list('screening_identifier', flat=True)
@@ -72,7 +72,7 @@ class ExportNonCrfData:
                 data = self.export_methods_cls.fix_date_format(self.export_methods_cls.non_crf_obj_dict(obj=obj))
                 if exclude:
                     exclude_fields.append(exclude)
-                    
+
                 for e_fields in exclude_fields:
                     try:
                         del data[e_fields]
@@ -147,11 +147,11 @@ class ExportNonCrfData:
                 except self.rs_cls.DoesNotExist:
                     raise ValidationError('Registered subject can not be missing')
                 else:
-                    if not 'dob' in data:
+                    if 'dob' not in data:
                         data.update(dob=rs.dob)
-                    if not 'gender' in data:
+                    if 'gender' not in data:
                         data.update(gender=rs.gender)
-                    if not 'screening_identifier' in data:
+                    if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
                     data.update(
                         relative_identifier=rs.relative_identifier,
@@ -186,11 +186,11 @@ class ExportNonCrfData:
                 except self.rs_cls.DoesNotExist:
                     raise ValidationError('Registered subject can not be missing')
                 else:
-                    if not 'dob' in data:
+                    if 'dob' not in data:
                         data.update(dob=rs.dob)
-                    if not 'gender' in data:
+                    if 'gender' not in data:
                         data.update(gender=rs.gender)
-                    if not 'screening_identifier' in data:
+                    if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
                     data.update(
                         relative_identifier=rs.relative_identifier,
