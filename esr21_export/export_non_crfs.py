@@ -147,11 +147,11 @@ class ExportNonCrfData:
                 except self.rs_cls.DoesNotExist:
                     raise ValidationError('Registered subject can not be missing')
                 else:
-                    if not 'dob' in data:
+                    if 'dob' not in data:
                         data.update(dob=rs.dob)
-                    if not 'gender' in data:
+                    if 'gender' not in data:
                         data.update(gender=rs.gender)
-                    if not 'screening_identifier' in data:
+                    if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
                     data.update(
                         relative_identifier=rs.relative_identifier,
@@ -186,11 +186,11 @@ class ExportNonCrfData:
                 except self.rs_cls.DoesNotExist:
                     raise ValidationError('Registered subject can not be missing')
                 else:
-                    if not 'dob' in data:
+                    if 'dob' not in data:
                         data.update(dob=rs.dob)
-                    if not 'gender' in data:
+                    if 'gender' not in data:
                         data.update(gender=rs.gender)
-                    if not 'screening_identifier' in data:
+                    if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
                     data.update(
                         relative_identifier=rs.relative_identifier,
