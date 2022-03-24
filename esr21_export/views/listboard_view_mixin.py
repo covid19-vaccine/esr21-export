@@ -251,7 +251,7 @@ class ListBoardViewMixin:
         # Zip the file
         if not self.email:
             self.email = self.request.user.email
-    
+
         doc.download_complete = True
         doc.save()
 
