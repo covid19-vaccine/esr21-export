@@ -48,7 +48,8 @@ class ExportNonCrfData:
             eligible_identifier = list(set(eligible_identifier))
             consent_screening_ids = self.consent_model_cls.objects.filter(site_id=site_id).values_list('screening_identifier', flat=True)
             consent_screening_ids = list(set(consent_screening_ids))
-            no_consent_screenigs.append(list(set(eligible_identifier) - set(consent_screening_ids)))
+            missing_site_consents = list(set(eligible_identifier) - set(consent_screening_ids))
+            no_consent_screenigs += missing_site_consents
         return no_consent_screenigs
 
     def subject_non_crfs(self, subject_model_list=None, exclude=None):
