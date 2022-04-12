@@ -26,6 +26,54 @@ class ListBoardViewMixin:
 
     def __init__(self, to_email=None):
         self.email = to_email
+        
+    def vida_current_export(self, export_path=None):
+        """Export current file VIDA is interested in only.
+        """
+        
+        vida_subject_crfs_list = [
+            'demographicsdata',
+            'medicalhistory',
+            'pregnancystatus',
+            'pregnancytest',
+            'rapidhivtesting',
+            'vaccinationdetails',
+        ]
+        
+        vida_subject_inlines_dict = {
+            'adverseevent': [['adverseeventrecord'], 'adverse_event_id'],
+            'seriousadverseevent': [
+                ['seriousadverseeventrecord'], 'serious_adverse_event_id'],
+            'specialinterestadverseevent': [
+                ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'], 
+        }
+        
+        vida_subject_many_to_many_crf = [
+            ['medicalhistory', 'covid_symptoms', 'symptoms'],
+            ['medicalhistory', 'comorbidities', 'diseases'],
+            ['pregnancystatus', 'contraceptive', 'contraception'],
+            ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria'],
+        ]
+        
+        vida_subject_model_list = [
+            'eligibilityconfirmation', 'screeningeligibility', 'informedconsent',
+        ]
+        export_crf_data = ExportDataMixin(export_path=export_path)
+        export_crf_data.export_crfs(
+            crf_list=vida_subject_crfs_list,
+            crf_data_dict=ExportMethods().subject_crf_data_dict,
+            study='esr21_subject')
+        export_crf_data.export_inline_crfs(
+            inlines_dict=vida_subject_inlines_dict,
+            crf_data_dict=ExportMethods().subject_crf_data_dict,
+            study='esr21_subject')
+        export_crf_data.generate_m2m_crf(
+            m2m_class=vida_subject_many_to_many_crf,
+            crf_data_dict=ExportMethods().subject_crf_data_dict,
+            study='esr21_subject')
+        
+        non_crf_data = ExportNonCrfData(export_path=export_path)
+        non_crf_data.subject_non_crfs(subject_model_list=vida_subject_model_list)
 
     def export_subject_data(self, export_path=None):
             """Export all subject CRF data.
@@ -111,6 +159,50 @@ class ListBoardViewMixin:
                 doc=doc)
         except Exception as e:
             raise e
+
+
+    def download_vida_current_export(self):
+        
+        export_identifier = self.identifier_cls().identifier
+        thread_name = 'vida_current_export'
+        last_doc = ExportFile.objects.filter(
+            description='Current required Export', download_complete=True).order_by(
+                'created').last()
+
+        if last_doc:
+            download_time = last_doc.download_time
+        else:
+            download_time = 0.0
+        options = {
+            'description': 'Current required Export',
+            'study': 'esr21',
+            'export_identifier': export_identifier,
+            'download_time': download_time
+        }
+        doc = ExportFile.objects.create(**options)
+        try:
+            start = time.perf_counter()
+            today_date = datetime.datetime.now().strftime('%Y%m%d')
+
+            zipped_file_path = 'documents/' + export_identifier + '_esr21_export_' + today_date + '.zip'
+            dir_to_zip = settings.MEDIA_ROOT + '/documents/' + export_identifier + '_esr21_export_' + today_date
+
+            export_path = dir_to_zip + '/current_required/'
+            self.vida_current_export(export_path=export_path)
+
+            doc.document = zipped_file_path
+            doc.save()
+
+            # Zip the file
+
+            self.zipfile(
+                thread_name=thread_name,
+                dir_to_zip=dir_to_zip, start=start,
+                export_identifier=export_identifier,
+                doc=doc)
+        except Exception as e:
+            raise e
+
 
     def download_subject_data(self):
         """Export subject data.
