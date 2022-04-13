@@ -47,19 +47,29 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
             self.generate_export(thread_name='esr21_metadata_export',
                                  thread_target=self.download_medata,
                                  description='Metadata Export')
+        elif download == '5':
+            self.generate_export(thread_name='vida_current_export',
+                                 thread_target=self.download_vida_current_export,
+                                 description='Current required Export')
+        
 
         non_crf_exports = ExportFile.objects.filter(
-            description='ESR21 Non CRF Export').order_by('-uploaded_at')[:10]
+            description='ESR21 Non CRF Export').order_by('-uploaded_at')[:5]
 
         metadata_exports = ExportFile.objects.filter(
-            description='Metadata Export').order_by('-uploaded_at')[:10]
+            description='Metadata Export').order_by('-uploaded_at')[:5]
 
         subject_crf_exports = ExportFile.objects.filter(
-            description='ESR21 Subject CRF Export').order_by('-uploaded_at')[:10]
+            description='ESR21 Subject CRF Export').order_by('-uploaded_at')[:5]
+        
+        vida_crf_exports = ExportFile.objects.filter(
+            description='Current required Export').order_by('-uploaded_at')[:5]
+        
         context.update(
             non_crf_exports=non_crf_exports,
             metadata_exports=metadata_exports,
-            subject_crf_exports=subject_crf_exports,)
+            subject_crf_exports=subject_crf_exports,
+            vida_crf_exports=vida_crf_exports)
         return context
 
     def generate_export(self, thread_name=None, active_download=False,
