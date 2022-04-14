@@ -26,11 +26,10 @@ class ListBoardViewMixin:
 
     def __init__(self, to_email=None):
         self.email = to_email
-        
+
     def vida_current_export(self, export_path=None):
         """Export current file VIDA is interested in only.
         """
-        
         vida_subject_crfs_list = [
             'demographicsdata',
             'medicalhistory',
@@ -38,8 +37,9 @@ class ListBoardViewMixin:
             'pregnancytest',
             'rapidhivtesting',
             'vaccinationdetails',
+            'covid19results'
         ]
-        
+
         vida_subject_inlines_dict = {
             'adverseevent': [['adverseeventrecord'], 'adverse_event_id'],
             'seriousadverseevent': [
@@ -47,14 +47,14 @@ class ListBoardViewMixin:
             'specialinterestadverseevent': [
                 ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'], 
         }
-        
+
         vida_subject_many_to_many_crf = [
             ['medicalhistory', 'covid_symptoms', 'symptoms'],
             ['medicalhistory', 'comorbidities', 'diseases'],
             ['pregnancystatus', 'contraceptive', 'contraception'],
             ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria'],
         ]
-        
+
         vida_subject_model_list = [
             'eligibilityconfirmation', 'screeningeligibility', 'informedconsent',
         ]
@@ -71,7 +71,7 @@ class ListBoardViewMixin:
             m2m_class=vida_subject_many_to_many_crf,
             crf_data_dict=ExportMethods().subject_crf_data_dict,
             study='esr21_subject')
-        
+
         non_crf_data = ExportNonCrfData(export_path=export_path)
         non_crf_data.subject_non_crfs(subject_model_list=vida_subject_model_list)
 
@@ -160,9 +160,8 @@ class ListBoardViewMixin:
         except Exception as e:
             raise e
 
-
     def download_vida_current_export(self):
-        
+
         export_identifier = self.identifier_cls().identifier
         thread_name = 'vida_current_export'
         last_doc = ExportFile.objects.filter(
@@ -202,7 +201,6 @@ class ListBoardViewMixin:
                 doc=doc)
         except Exception as e:
             raise e
-
 
     def download_subject_data(self):
         """Export subject data.

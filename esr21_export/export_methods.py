@@ -145,7 +145,6 @@ class ExportMethods:
                 screening_age_in_years=None,
                 dob=None,
                 gender=None,
-                
             )
         if 'registration_datetime' not in data:
             try:
