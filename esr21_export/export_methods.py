@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from django.apps import apps as django_apps
 from django.core.exceptions import ValidationError
@@ -6,7 +7,6 @@ from django_crypto_fields.fields import (
     EncryptedCharField, EncryptedDecimalField, EncryptedIntegerField,
     EncryptedTextField, FirstnameField, IdentityField, LastnameField)
 from pytz import timezone
-import re
 
 from esr21_subject.models import SeriousAdverseEventRecord
 
@@ -22,6 +22,7 @@ class ExportMethods:
     def __init__(self):
         self.rs_cls = django_apps.get_model('edc_registration.registeredsubject')
         self.subject_consent_csl = django_apps.get_model('esr21_subject.informedconsent')
+        self.onschedule_cls = django_apps.get_model('esr21_subject.onschedule')
 
     def encrypt_values(self, obj_dict=None, obj_cls=None):
         """Ecrypt values for fields that are encypted.
@@ -33,6 +34,18 @@ class ExportMethods:
                     new_value = f.field_cryptor.encrypt(value)
                     result_dict_obj[key] = new_value
         return result_dict_obj
+
+    def get_participant_cohort(self, subject_identifier):
+
+        onschedule_objs = self.onschedule_cls.objects.filter(
+            subject_identifier=subject_identifier)
+
+        if onschedule_objs:
+            onschedule_obj = onschedule_objs[0]
+            if 'sub' in onschedule_obj.schedule_name:
+                return 'sub cohort'
+            else:
+                return 'main cohort'
 
     def fix_date_format(self, obj_dict=None):
         """Change all dates into a format for the export
@@ -145,7 +158,7 @@ class ExportMethods:
                 screening_age_in_years=None,
                 dob=None,
                 gender=None,
-                
+
             )
         if 'registration_datetime' not in data:
             try:
