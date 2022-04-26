@@ -30,7 +30,8 @@ subject_crfs_list = [
     'specialinterestadverseevent',
     'targetedphysicalexamination',
     'vaccinationdetails',
-    'vitalsigns'
+    'vitalsigns',
+    'covid19results'
 ]
 
 subject_inlines_dict = {
