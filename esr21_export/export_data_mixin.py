@@ -35,7 +35,7 @@ class ExportDataMixin:
                     except KeyError:
                         pass
                 subject_identifier = data.get('subject_visit').subject_identifier
-                data.update(subject_identifier=subject_identifier)
+                data.update(self.get_participant_cohort(data.get('subject_identifier')))
                 crf_data.append(data)
                 count += 1
             timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
@@ -84,7 +84,8 @@ class ExportDataMixin:
                             except KeyError:
                                 pass
                         subject_identifier = crfdata.get('subject_visit').subject_identifier
-                        crfdata.update(subject_identifier=subject_identifier)
+                        crfdata.update(self.get_participant_cohort(
+                            data.get('subject_identifier')))
                         mergered_data.append(crfdata)
                         count += 1
                 timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
@@ -127,7 +128,8 @@ class ExportDataMixin:
                             except KeyError:
                                 pass
                         subject_identifier = crfdata.get('subject_visit').subject_identifier
-                        crfdata.update(subject_identifier=subject_identifier)
+                        crfdata.update(self.get_participant_cohort(
+                            data.get('subject_identifier')))
                         mergered_data.append(crfdata)
                         count += 1
 
