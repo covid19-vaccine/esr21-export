@@ -22,7 +22,7 @@ class ExportMethods:
     def __init__(self):
         self.rs_cls = django_apps.get_model('edc_registration.registeredsubject')
         self.subject_consent_csl = django_apps.get_model('esr21_subject.informedconsent')
-        self.onschedule_cls = django_apps.get_model('esr21_subject.onschedule')
+        self.onschedule_cls = django_apps.get_model('esr21_subject.onschedule')  
 
     def encrypt_values(self, obj_dict=None, obj_cls=None):
         """Ecrypt values for fields that are encypted.
@@ -43,9 +43,9 @@ class ExportMethods:
         if onschedule_objs:
             onschedule_obj = onschedule_objs[0]
             if 'sub' in onschedule_obj.schedule_name:
-                return 'sub cohort'
+                return {'cohort': 'sub cohort'}
             else:
-                return 'main cohort'
+                return {'cohort': 'main cohort'}
 
     def fix_date_format(self, obj_dict=None):
         """Change all dates into a format for the export
