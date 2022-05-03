@@ -46,7 +46,8 @@ class ExportNonCrfData:
             eligible_identifier = self.eligibility_confirmation_cls.objects.filter(
                 is_eligible=True, site_id=site_id).values_list('screening_identifier', flat=True)
             eligible_identifier = list(set(eligible_identifier))
-            consent_screening_ids = self.consent_model_cls.objects.filter(site_id=site_id).values_list('screening_identifier', flat=True)
+            consent_screening_ids = self.consent_model_cls.objects.filter(
+                site_id=site_id).values_list('screening_identifier', flat=True)
             consent_screening_ids = list(set(consent_screening_ids))
             missing_site_consents = list(set(eligible_identifier) - set(consent_screening_ids))
             no_consent_screenigs += missing_site_consents
@@ -63,14 +64,16 @@ class ExportNonCrfData:
             else:
                 model_cls = django_apps.get_model('esr21_subject', model_name)
             if model_name == 'eligibilityconfirmation':
-                objs = model_cls.objects.filter(~Q(screening_identifier__in=self.eligible_no_icf_statistics))
+                objs = model_cls.objects.filter(
+                    ~Q(screening_identifier__in=self.eligible_no_icf_statistics))
             else:
                 objs = model_cls.objects.all()
             count = 0
             models_data = []
 
             for obj in objs:
-                data = self.export_methods_cls.fix_date_format(self.export_methods_cls.non_crf_obj_dict(obj=obj))
+                data = self.export_methods_cls.fix_date_format(
+                    self.export_methods_cls.non_crf_obj_dict(obj=obj))
                 if exclude:
                     exclude_fields.append(exclude)
 
@@ -79,6 +82,8 @@ class ExportNonCrfData:
                         del data[e_fields]
                     except KeyError:
                         pass
+                if 'subject_identifier' in data:
+                        data.update(self.get_participant_cohort(data.get('subject_identifier')))
                 models_data.append(data)
                 count += 1
             timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
@@ -154,6 +159,8 @@ class ExportNonCrfData:
                         data.update(gender=rs.gender)
                     if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
+                    if 'subject_identifier' in data:
+                        data.update(self.get_participant_cohort(data.get('subject_identifier')))
                     data.update(
                         relative_identifier=rs.relative_identifier,
                         screening_age_in_years=rs.screening_age_in_years,
@@ -193,6 +200,8 @@ class ExportNonCrfData:
                         data.update(gender=rs.gender)
                     if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
+                    if 'subject_identifier' in data:
+                        data.update(self.get_participant_cohort(data.get('subject_identifier')))
                     data.update(
                         relative_identifier=rs.relative_identifier,
                         screening_age_in_years=rs.screening_age_in_years,
@@ -226,9 +235,10 @@ class ExportNonCrfData:
                 except KeyError:
                     pass
             data.append(d)
+            if 'subject_identifier' in data:
+                data.update(self.get_participant_cohort(data.get('subject_identifier')))
         timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         fname = 'esr21_subject_subject_visit' + '_' + timestamp + '.csv'
         final_path = self.export_path + fname
         df_crf = pd.DataFrame(data)
         df_crf.to_csv(final_path, encoding='utf-8', index=False)
-

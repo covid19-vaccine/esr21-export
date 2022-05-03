@@ -53,7 +53,8 @@ subject_many_to_many_crf = [
     ['medicalhistory', 'covid_symptoms', 'symptoms'],
     ['medicalhistory', 'comorbidities', 'diseases'],
     ['pregnancystatus', 'contraceptive', 'contraception'],
-    ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria'],
+    ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria',
+     'covid19symptomaticinfections', 'symptomatic_infections', 'symptomaticinfections'],
 ]
 
 subject_many_to_many_non_crf = []
