@@ -27,11 +27,13 @@ subject_crfs_list = [
     'pregnancytest',
     'rapidhivtesting',
     'samplecollection',
+    'seriousadverseevent',
     'specialinterestadverseevent',
     'targetedphysicalexamination',
     'vaccinationdetails',
     'vitalsigns',
-    'covid19results'
+    'covid19results',
+    'pregoutcome'
 ]
 
 subject_inlines_dict = {
@@ -39,13 +41,14 @@ subject_inlines_dict = {
     'seriousadverseevent': [
         ['seriousadverseeventrecord'], 'serious_adverse_event_id'],
     'specialinterestadverseevent': [
-        ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'], 
+        ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'],
+    'concomitantmedication': [['medication'], 'concomitant_medication_id'],
+    'pregoutcome': [['outcomeinline'], 'preg_outcome_id']
 }
 
 subject_model_list = [
     'eligibilityconfirmation', 'screeningeligibility', 'informedconsent',
-    'personalcontactinfo', 'seriousadverseevent', 'specialinterestadverseevent',
-    'subjectrequisition', 'subjectvisit'
+    'personalcontactinfo', 'subjectrequisition', 'subjectvisit'
 ]
 
 subject_many_to_many_crf = [
@@ -54,7 +57,8 @@ subject_many_to_many_crf = [
     ['medicalhistory', 'comorbidities', 'diseases'],
     ['pregnancystatus', 'contraceptive', 'contraception'],
     ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria',
-     'covid19symptomaticinfections', 'symptomatic_infections', 'symptomaticinfections'],
+     'covid19symptomaticinfections', 'symptomatic_infections',
+     'symptomaticinfections'],
 ]
 
 subject_many_to_many_non_crf = []
