@@ -83,7 +83,7 @@ class ExportNonCrfData:
                     except KeyError:
                         pass
                 if 'subject_identifier' in data:
-                        data.update(self.get_participant_cohort(data.get('subject_identifier')))
+                        data.update(self.export_methods_cls.get_participant_cohort(data.get('subject_identifier')))
                 models_data.append(data)
                 count += 1
             timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
@@ -160,7 +160,7 @@ class ExportNonCrfData:
                     if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
                     if 'subject_identifier' in data:
-                        data.update(self.get_participant_cohort(data.get('subject_identifier')))
+                        data.update(self.export_methods_cls.get_participant_cohort(data.get('subject_identifier')))
                     data.update(
                         relative_identifier=rs.relative_identifier,
                         screening_age_in_years=rs.screening_age_in_years,
@@ -201,7 +201,7 @@ class ExportNonCrfData:
                     if 'screening_identifier' not in data:
                         data.update(screening_identifier=rs.screening_identifier)
                     if 'subject_identifier' in data:
-                        data.update(self.get_participant_cohort(data.get('subject_identifier')))
+                        data.update(self.export_methods_cls.get_participant_cohort(data.get('subject_identifier')))
                     data.update(
                         relative_identifier=rs.relative_identifier,
                         screening_age_in_years=rs.screening_age_in_years,
@@ -236,7 +236,7 @@ class ExportNonCrfData:
                     pass
             data.append(d)
             if 'subject_identifier' in data:
-                data.update(self.get_participant_cohort(data.get('subject_identifier')))
+                data.update(self.export_methods_cls.get_participant_cohort(data.get('subject_identifier')))
         timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         fname = 'esr21_subject_subject_visit' + '_' + timestamp + '.csv'
         final_path = self.export_path + fname
