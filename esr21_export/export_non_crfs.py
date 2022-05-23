@@ -83,7 +83,7 @@ class ExportNonCrfData:
                     except KeyError:
                         pass
                 if 'subject_identifier' in data:
-                        data.update(self.export_methods_cls.get_participant_cohort(data.get('subject_identifier')))
+                    data.update(self.export_methods_cls.get_participant_cohort(data.get('subject_identifier')))
                 models_data.append(data)
                 count += 1
             timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
