@@ -46,6 +46,7 @@ class ExportMethods:
                 return {'cohort': 'sub cohort'}
             else:
                 return {'cohort': 'main cohort'}
+        return {}
 
     def fix_date_format(self, obj_dict=None):
         """Change all dates into a format for the export
