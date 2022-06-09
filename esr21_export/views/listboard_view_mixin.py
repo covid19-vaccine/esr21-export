@@ -31,13 +31,16 @@ class ListBoardViewMixin:
         """Export current file VIDA is interested in only.
         """
         vida_subject_crfs_list = [
+            'covid19symptomaticinfections',
+            'concomitantmedication',
             'demographicsdata',
             'medicalhistory',
             'pregnancystatus',
             'pregnancytest',
             'rapidhivtesting',
             'vaccinationdetails',
-            'covid19results'
+            'covid19results',
+            'pregoutcome'
         ]
 
         vida_subject_inlines_dict = {
@@ -45,7 +48,9 @@ class ListBoardViewMixin:
             'seriousadverseevent': [
                 ['seriousadverseeventrecord'], 'serious_adverse_event_id'],
             'specialinterestadverseevent': [
-                ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'], 
+                ['specialinterestadverseeventrecord'], 'special_interest_adverse_event_id'],
+            'concomitantmedication': [['medication'], 'concomitant_medication_id'],
+            'pregoutcome': [['outcomeinline'], 'preg_outcome_id']
         }
 
         vida_subject_many_to_many_crf = [
@@ -53,6 +58,8 @@ class ListBoardViewMixin:
             ['medicalhistory', 'comorbidities', 'diseases'],
             ['pregnancystatus', 'contraceptive', 'contraception'],
             ['seriousadverseeventrecord', 'sae_criteria', 'saecriteria'],
+            ['covid19symptomaticinfections', 'symptomatic_infections',
+             'symptomaticinfections'],
         ]
 
         vida_subject_model_list = [
