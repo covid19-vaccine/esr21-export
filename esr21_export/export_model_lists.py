@@ -48,7 +48,8 @@ subject_inlines_dict = {
 
 subject_model_list = [
     'eligibilityconfirmation', 'screeningeligibility', 'informedconsent',
-    'personalcontactinfo', 'subjectrequisition', 'subjectvisit'
+    'personalcontactinfo', 'subjectrequisition', 'subjectvisit',
+    'vaccinationhistory'
 ]
 
 subject_many_to_many_crf = [
