@@ -51,7 +51,6 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
             self.generate_export(thread_name='vida_current_export',
                                  thread_target=self.download_vida_current_export,
                                  description='Current required Export')
-        
 
         non_crf_exports = ExportFile.objects.filter(
             description='ESR21 Non CRF Export').order_by('-uploaded_at')[:5]
@@ -61,10 +60,10 @@ class HomeView(ListBoardViewMixin, EdcBaseViewMixin,
 
         subject_crf_exports = ExportFile.objects.filter(
             description='ESR21 Subject CRF Export').order_by('-uploaded_at')[:5]
-        
+
         vida_crf_exports = ExportFile.objects.filter(
             description='Current required Export').order_by('-uploaded_at')[:5]
-        
+
         context.update(
             non_crf_exports=non_crf_exports,
             metadata_exports=metadata_exports,

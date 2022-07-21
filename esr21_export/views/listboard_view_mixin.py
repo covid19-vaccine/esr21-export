@@ -63,7 +63,8 @@ class ListBoardViewMixin:
         ]
 
         vida_subject_model_list = [
-            'eligibilityconfirmation', 'screeningeligibility', 'informedconsent',
+            'eligibilityconfirmation', 'screeningeligibility',
+            'informedconsent', 'vaccinationhistory',
         ]
         export_crf_data = ExportDataMixin(export_path=export_path)
         export_crf_data.export_crfs(
