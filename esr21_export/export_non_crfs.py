@@ -63,11 +63,8 @@ class ExportNonCrfData:
                 model_cls = self.appointment_cls
             else:
                 model_cls = django_apps.get_model('esr21_subject', model_name)
-            if model_name == 'eligibilityconfirmation':
-                objs = model_cls.objects.filter(
-                    ~Q(screening_identifier__in=self.eligible_no_icf_statistics))
-            else:
-                objs = model_cls.objects.all()
+
+            objs = model_cls.objects.all()
             count = 0
             models_data = []
 
